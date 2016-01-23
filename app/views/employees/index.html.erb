@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Employee Details</h1>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th><%= link_to "Age",:sort => "age" %></th>
+      <th><%= link_to "Salary",:sort => "salary"%></th>
+      <th><%= link_to "Department", :sort => "department_id" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.name %></td>
+        <td><%= employee.email %></td>
+        <td><%= employee.age %></td>
+        <td><%= employee.salary %></td>
+        <td><%= employee.department.id %></td>
+        <td><%= link_to 'Show', employee %></td>
+        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>      
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to "Retired Employees",:sort => "age" %>
+<br><br>
+<%= link_to "Heighest Paid Employess",:sort => "age" ,:direction => "desc"  %>
+<br><br>
+<%= link_to 'New Employee', new_employee_path %>
