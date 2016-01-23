@@ -5,9 +5,17 @@ class EmployeesController < ApplicationController
   # GET /employees.json
   def index
     params[:sort]||='age'
-    @employees = Employee.order(params[:sort])
-    @employees = Employee.order('salary desc').limit(5) if params[:action]=="true"
-    
+    @employees = case params[:link]
+      when "Retired Employees" then Employee.where 'age > 65'
+      when "Heighest Paid Employess" then Employee.order('salary desc').limit(5)
+      when "Heighest Paid individual" then Employee.order('salary desc').limit(1)
+      when "Senior Employees" then Employee.order('age desc').limit(5).where 'age <= 65'
+      when "Heighest paid by department" then Employee.group('department_id')
+      when "Heighest & Lowest" then Employee.where(salary: Employee.maximum('salary')) | Employee.where(salary: Employee.minimum('salary'))
+      when "Lowest paid Senior" then Employee.order('salary asc, age desc').limit(1)
+      else 
+        Employee.order(params[:sort])  
+      end
   end
 
   # GET /employees/1
